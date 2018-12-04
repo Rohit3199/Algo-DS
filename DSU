@@ -1,0 +1,63 @@
+//un-struct
+int parent[mx];  //nodes
+int size[mx];
+void initialise()
+{
+    for(int i=0;i<mx;i++){
+        parent[i]=i;
+        size[i]=1;
+    }
+}
+
+int root(int u) //find root of tree which contains root u
+{
+    if(parent[u]==u) return u;
+    else return parent[u]=root(parent[u]);  //path compression
+}
+
+void unite(int u,int v)
+{
+    u=root(u);
+    v=root(v);
+    if(u==v) return;
+    if(size[u]>size[v])
+        swap(u,v);
+    parent[u]=v;
+    size[v]+=size[u];
+}
+
+//using structure
+//problem :Mr kitayuta and colourful graph (codeforces)
+
+struct dsu
+{
+    static const int MAX_N=105; //nodes
+    int parent[MAX_N];
+    int size[MAX_N];
+    void init()
+    {
+        for(int i=0;i<MAX_N;i++)
+        {
+            parent[i]=i;
+            size[i]=1;
+        }
+    }
+    int root(int u)
+    {
+        if(parent[u]==u) return u;
+        else return parent[u]=root(parent[u]);
+    }
+    void unite(int u,int v)
+    {
+        u=root(u);
+        v=root(v);
+        if(u==v) return;
+        if(size[u]<size[v]) swap(u,v);
+        parent[v]=u;
+        size[u]+=size[v];
+    }
+    bool same(int u,int v)
+    {
+        return root(u)==root(v);
+    }
+};
