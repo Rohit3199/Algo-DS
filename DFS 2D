@@ -34,4 +34,49 @@ int main()
     cout<<"YES";
 }
 
+//iterative
+ int n,m;
+    cin>>n>>m;
+    string h;
+    string v;
+    cin>>h;
+    cin>>v;
+    
+     stack<pii> s;
+            s.push({i,j});
+            bool vis[n+1][m+1];
+            
+            memset(vis,0,sizeof(vis));
+            vis[i][j]=1;
+            while(!s.empty())
+            {
+                pii u=s.top();
+                s.pop();
+                int x1=u.F,y1=u.S;
+                if(h[x1]=='>'&&y1+1<m&&!vis[x1][y1+1])
+                {
+                    vis[x1][y1+1]=1;
+                    s.push({x1,y1+1});
+                }
+                if(h[x1]=='<'&&y1-1>=0&&!vis[x1][y1-1])
+                {
+                    vis[x1][y1-1]=1;
+                    s.push({x1,y1-1});
+                }
+                if(v[y1]=='v'&&x1+1<n&&!vis[x1+1][y1])
+                {
+                    vis[x1+1][y1]=1;
+                    s.push({x1+1,y1});
+                }
+                if(v[y1]=='^'&&x1-1>=0&&!vis[x1-1][y1])
+                {
+                    vis[x1-1][y1]=1;
+                    s.push({x1-1,y1});
+                }
+            }
+//                
+    
+
 problem : strongly connected city(codeforces)
+
+
