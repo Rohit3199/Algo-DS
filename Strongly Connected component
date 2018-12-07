@@ -1,0 +1,46 @@
+//#include<bits/stdc++.h>
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <stack>
+#include <queue>
+#include <cstring>
+using namespace std;
+#define ld long double
+#define F first
+#define S second
+#define ll long long
+#define mx 100000+10
+#define pii pair<int,int>
+#define all(v) v.begin(),v.end()
+#define pb push_back
+#define p 1000000007
+vector< vector<int> >adj1(mx);
+vector< vector<int> >adj2(mx);
+vector<int> order; //in decreasing order of exit time
+vector<int> component;
+int vis[mx];
+
+void dfs1(int u)
+{
+    vis[u]=true;
+    for(int v:adj1[u])
+    {
+        if(!vis[v])
+            dfs1(v);
+    }
+    order.pb(u);         //in increassing order of exit time
+    
+}
+
+void dfs2(int u)
+{
+    vis[u]=1;
+    component.pb(u);
+    for(int v:adj2[u])
+        if(!vis[v]) dfs2(v);
+}
+// main()
+problem :checkposts(codeforces)
