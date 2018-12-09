@@ -1,0 +1,50 @@
+//#include<bits/stdc++.h>
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <stack>
+#include <queue>
+#include <cstring>
+using namespace std;
+#define ld long double
+#define F first
+#define S second
+#define ll long long
+#define mx 150001
+#define pii pair<int,int>
+#define all(v) v.begin(),v.end()
+#define pb push_back
+
+void dfs(int u,vector<vector<int>>& adj,bool *vis)
+{
+    vis[u]=true;
+    for(int v:adj[u])
+    {
+        if(!vis[v])
+            dfs(v,adj,vis);
+    }
+}
+
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int n,m,u,v;
+    cin>>n>>m;
+   
+    vector< vector<int> > adj(n+1);
+   
+    bool vis[n+1];
+    
+    memset(vis,0,sizeof(vis));
+    for(int i=0;i<m;i++)
+    {
+        cin>>u>>v;
+        adj[u].pb(v);
+        adj[v].pb(u);
+       
+    }
+    dfs(1,adj,vis);
+}
