@@ -1,0 +1,74 @@
+//#include<bits/stdc++.h>
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <stack>
+#include <queue>
+#include <cstring>
+using namespace std;
+#define ld long double
+#define F first
+#define S second
+#define ll long long
+#define mx 150001
+#define pii pair<int,int>
+#define all(v) v.begin(),v.end()
+
+
+int parent[mx];
+int size[mx];
+void initialise()
+{
+    for(int i=0;i<mx;i++){
+        parent[i]=i;
+        size[i]=1;
+    }
+}
+
+int root(int u) //find root of tree which contains root u
+{
+    if(parent[u]==u) return u;
+    else return parent[u]=root(parent[u]);  //path compression
+}
+
+void unite(int u,int v)
+{
+    u=root(u);
+    v=root(v);
+    if(u==v) return;
+    if(size[u]>size[v])
+        swap(u,v);
+    parent[u]=v;
+    size[v]+=size[u];
+}
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    initialise();
+    int n,m,u,v;
+    cin>>n>>m;
+    int a[m],b[m];
+    ll node[n+1];  //number of node in ith connected component
+    ll edge[n+1];  //number of edges in ith connected component
+    
+    memset(node,0,sizeof(node));
+    memset(edge,0,sizeof(edge));
+    for(int i=0;i<m;i++)
+    {
+        cin>>u>>v;
+        a[i]=u;
+        b[i]=v;
+        unite(u,v);
+    }
+    for(int i=1;i<=n;i++)
+    {
+        node[root(i)]++;
+    }
+    for(int i=0;i<m;i++)
+    {
+        edge[root(a[i])]++;
+    }
+}
