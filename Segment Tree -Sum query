@@ -1,0 +1,73 @@
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <stack>
+#include <queue>
+#include <cstring>
+using namespace std;
+#define ld long double
+#define F first
+#define S second
+#define ll long long
+#define MAX_N 100009
+#define pii pair<int,int>
+#define all(v) v.begin(),v.end()
+#define pb push_back
+#define p 1000000007
+#define endl "\n"
+#define inf 1<<31
+
+int n;
+int t[4*MAX_N]; //segment tree
+
+void build(int *a,int curr,int tl,int tr) //a[] input array //curr-current vertex in            process which contains solution to the interval tl - tr of the input array
+{
+    if(tl==tr)  t[curr]=t[tr]; // interval of size 1 solution is input array itself
+    else  //calculate solution using child vertices
+    {
+        int mid=(tl+tr)/2;
+        build(a,2*curr,tl,mid); //left child containing solution toh range:tl to mid
+        build(a,2*curr+1,mid+1,tr);//right child containing solution toh range:mid+1 to tr
+        t[curr]=t[2*curr]+t[2*curr+1];
+    }
+}
+
+int sum(int curr,int tl,int tr,int l,int r)//l,r range which solution need to be calculated
+//tl and tr is the range of the curr verter whose solution is is known
+{
+    if(l==tl&&r==tr) return t[curr];
+    else
+    {
+        if(l>r) return 0;
+        int mid=(tl+tr)/2;
+        return sum(2*curr,tl,mid,l,min(r,mid))+sum(2*curr+1,mid+1,tr,max(mid+1,l),r);
+        //**consider l is fixed in left child and r is varing
+        //**conder r is fixed in right child and l is varing
+    }
+}
+
+void update(int curr,int tl,int tr,int pos,int val)
+{
+    if(tl==tr) t[curr]=val;
+    else //pos lies inside tl to tr
+    {
+        int mid=(tl+tr)/2;
+        if(pos<=mid) update(2*curr,tl,mid,pos,val); //update left child
+        else update(2*curr+1,mid+1,tr,pos,val); //update right child
+        t[curr]=t[curr*2]+t[curr*2+1]; //update parent using child
+    }
+}
+
+
+int main()
+{
+    int q;
+    cin>>n>>q;
+    int a[n];
+    for(int i=0;i<n;i++)
+        cin>>a[i];
+    build(a,1,0,n-1); //build segment tree t[] using input array a[],where 1 is root vertex(current node),0 to n-1 is the given range
+    
+}
