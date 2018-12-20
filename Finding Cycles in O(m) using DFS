@@ -1,0 +1,68 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ld long double
+#define F first
+#define S second
+#define ll long long
+#define pii pair<int,int>
+#define all(v) v.begin(),v.end()
+#define pb push_back
+#define p 1000000007
+const int N=2e5+10;
+int cycle_s,cycle_e;
+int col[N];
+int parent[N];
+vector<int> adj[N];
+vector<int> cycle[N];
+
+bool dfs(int u)
+{
+    col[u]=1;
+    for(int v:adj[u])
+    {
+     
+        if(col[v]==0)
+        {
+            col[v]=1;
+            parent[v]=u;
+            if(dfs(v)){
+                col[u]=2; //for not vis again in other call
+                return true;
+            }
+        }
+        else if(col[v]==1)
+        {
+            cycle_s=v;
+            cycle_e=u;
+            col[u]=2;// for not vis again in other call
+            return true;
+        }
+    }
+    col[u]=2;
+    return false;
+}
+
+int main()
+{
+    int n,x;
+    cin>>n;
+    for(int i=1;i<=n;i++)
+    {
+        cin>>x;
+        adj[i].pb(x);
+    }
+    int c=0;
+    memset(col,0,sizeof(col));
+    for(int v=1;v<=n;v++)
+    {
+        if(col[v]!=2&&dfs(v))
+        {
+            ++c;
+            for(int u=cycle_e;u!=cycle_s;u=parent[u])
+                cycle[c].pb(u);
+            cycle[c].pb(cycle_s);
+        } 
+    }
+}
+problem : Mouse hunt (CF)
+//Functional graph
