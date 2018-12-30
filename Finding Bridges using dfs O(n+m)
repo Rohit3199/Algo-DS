@@ -1,0 +1,54 @@
+
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <stack>
+#include <queue>
+#include <cstring>
+#include <set>
+#include <map>
+using namespace std;
+#define ld long double
+#define F first
+#define S second
+#define ll long long
+#define pii pair<int,int>
+#define all(v) v.begin(),v.end()
+#define pb push_back
+#define p 1000000007
+#define IOS ios_base::sync_with_stdio(false); cin.tie(NULL)
+#define ll int
+const int N=2e5+19;
+const int inf=1e9;
+
+vector<int> vis[N];
+vector<int> bridge;
+vector<int> tin(N),fup(N);
+int timer=0;
+void dfs(int u,int par=-1)
+{
+    vis[u]=true;
+    tin[u]=fup[u]=timer++;
+    for(auto x:adj[u])
+    {
+        int v=x.F;
+        if(v==par) continue;
+        if(vis[v]) fup[u]=min(tin[v],fup[u]);
+        else
+        {
+            dfs(v,u);
+            fup[u]=min(fup[u],fup[v]);
+            if(tin[u]<fup[v]) bridge.pb({u,v}); 
+        }
+    }
+}
+
+//algorithm not consider multiple edges
+//so check if not multiple edges are present
+//use for undirected graph
+//Q.)President and roads (CF)
+
+
+
