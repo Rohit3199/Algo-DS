@@ -1,0 +1,49 @@
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <stack>
+#include <queue>
+#include <cstring>
+#include <set>
+#include <map>
+using namespace std;
+#define ld long double
+#define F first
+#define S second
+#define ll long long
+#define pii pair<int,int>
+#define all(v) v.begin(),v.end()
+#define pb push_back
+#define p 1000000007
+#define IOS ios_base::sync_with_stdio(false); cin.tie(NULL)
+#define ll int
+const int N=2e5+19;
+const int inf=1e18;
+
+void dijkstra(int src,vector<int> &dist) //pass parent vector to obtain shortest path
+{
+    fill(all(dist),inf);
+    set <pii> s;
+    s.insert({0,src});
+    dist[src]=0;
+    while(!s.empty())
+    {
+        u=s.begin()->S;
+        s.erase(s.begin());
+        for(auto x:adj1[u])
+        {
+            v=x.F;
+            w=x.S;
+            if(dist[v]>dist[u]+w)
+            {
+                s.erase({dist[v],v});
+                dist[v]=dist[u]+w;
+                s.insert({dist[v],v});
+            }
+        }
+    }
+}
+
+//Q.) President and roads
