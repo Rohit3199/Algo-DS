@@ -1,0 +1,46 @@
+class LCA{    //source : https://cp-algorithms.com/graph/lca_binary_lifting.html
+    vector<int> tin,tout;
+   
+    vector<vector<int> > adj;
+    int timer;
+    int l;
+    
+public :
+    vector<vector<int> > up;
+    LCA(){}
+    LCA(int n,vector<vector<int> > adj1){
+        tin.resize(n);
+        tout.resize(n);
+        timer=0;
+        l=ceil(log(n));
+        up.assign(n,vector<int> (l+1));
+        adj=adj1;
+        dfs(0,0);   // dd                     //zero based indexing
+    }
+    void dfs(int u,int pr){ //for calculating up ancestors
+        tin[u]=++timer;
+        up[u][0]=pr;
+        for(int i=1;i<=l;i++){
+            up[u][i]=up[up[u][i-1]][i-1];
+        }
+        for(int v:adj[u]){
+            if(v!=pr) dfs(v,u);
+        }
+        tout[u]=++timer;
+    }
+    bool is_par(int u,int v){     // u--->--->v
+        if(tin[u]<=tin[v]&&tout[u]>=tout[v]) return  1;
+        else return 0;
+    }
+    int query(int u,int v){
+        if(is_par(u,v)) return u;
+        if(is_par(u,v)) return v;
+        
+        for(int i=l;i>=0;i--){
+            int x=up[u][i];
+            if(is_par(x,v)) continue;
+            u=x;
+        }
+        return up[u][0];
+    }
+};
